@@ -51,7 +51,7 @@ For example:
 https://github.com/your-name/HacktoberFest-2023.git
 ```
 
-where `your-name` is your GitHub username. Here you're copying the contents of the [HacktoberFest-2022](https://github.com/janusjerom/HacktoberFest-2023.git) repository on GitHub to your computer.
+where `your-name` is your GitHub username. Here you're copying the contents of the [HacktoberFest-2023](https://github.com/janusjerom/HacktoberFest-2023.git) repository on GitHub to your computer.
 
 Before cloning the repository you just make sure that you have changed the directory to _Desktop_ or to some other locations, To change the directory to Desktop run the following command:
 
