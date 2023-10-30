@@ -1,0 +1,127 @@
+#Centroid Decomposition
+
+import collections
+
+MAXN = 1025
+
+tree = collections.defaultdict(list)
+centroidTree = collections.defaultdict(list)
+centroidMarked = [False]*MAXN
+
+# method to add edge between to nodes of the undirected tree 
+def addEdge(u, v):
+	tree[u].append(v)
+	tree[v].append(u)
+
+# method to setup subtree sizes and nodes in current tree 
+def DFS(src, visited, subtree_size, n):
+	# mark node visited 
+	visited[src] = True
+
+	# increase count of nodes visited 
+	n[0] += 1
+
+	# initialize subtree size for current node
+	subtree_size[src] = 1
+
+	# recur on non-visited and non-centroid neighbours 
+	for it in tree[src]:
+		if not visited[it] and not centroidMarked[it]:
+			DFS(it, visited, subtree_size, n)
+			subtree_size[src] += subtree_size[it]
+
+def getCentroid(src, visited, subtree_size, n):
+	# assume the current node to be centroid 
+	is_centroid = True
+
+	# mark it as visited 
+	visited[src] = True
+
+	# track heaviest child of node, to use in case node is 
+	# not centroid 
+	heaviest_child = 0
+
+	# iterate over all adjacent nodes which are children 
+	# (not visited) and not marked as centroid to some 
+	# subtree
+	for it in tree[src]:
+		if not visited[it] and not centroidMarked[it]:
+			# If any adjacent node has more than n/2 nodes,
+			# current node cannot be centroid 
+			if subtree_size[it] > n/2:
+				is_centroid = False
+
+			# update heaviest child 
+			if heaviest_child == 0 or subtree_size[it] > subtree_size[heaviest_child]:
+				heaviest_child = it
+
+	# if current node is a centroid 
+	if is_centroid and n - subtree_size[src] <= n/2:
+		return src
+
+	# else recur on heaviest child 
+	return getCentroid(heaviest_child, visited, subtree_size, n)
+
+# function to get the centroid of tree rooted at src.
+# tree may be the original one or may belong to the forest 
+# function to get the centroid of tree rooted at src.
+# tree may be the original one or may belong to the forest 
+def getCentroidTree(src):
+	visited = [False]*MAXN
+
+	subtree_size = [0]*MAXN
+
+	# initialize auxiliary arrays
+	n = [0]
+
+	# DFS to set up subtree sizes and nodes in current tree 
+	DFS(src, visited, subtree_size, n)
+
+	visited = [False]*MAXN
+
+	centroid = getCentroid(src, visited, subtree_size, n[0])
+
+	centroidMarked[centroid] = True
+
+	return centroid
+
+
+# function to generate centroid tree of tree rooted at src 
+def decomposeTree(root):
+	# get centroid for current tree 
+	cend_tree = getCentroidTree(root)
+
+	print(cend_tree, end=" ")
+
+
+	# for every node adjacent to the found centroid, 
+	# decompose the tree rooted at that node
+	for it in tree[cend_tree]:
+		if not centroidMarked[it]:
+			decomposeTree(it)
+
+# driver code
+if __name__ == "__main__":
+	# number of nodes in the tree 
+	n = 16
+
+	# arguments in order: node u, node v
+	# sequencing starts from 1 
+	addEdge(1, 4)
+	addEdge(2, 4)
+	addEdge(3, 4)
+	addEdge(4, 5)
+	addEdge(5, 6)
+	addEdge(6, 7)
+	addEdge(7, 8)
+	addEdge(7, 9)
+	addEdge(6, 10)
+	addEdge(10, 11)
+	addEdge(11, 12)
+	addEdge(11, 13)
+	addEdge(12, 14)
+	addEdge(13, 15)
+	addEdge(13, 16)
+
+	# generates centroid tree 
+	decomposeTree(1)
