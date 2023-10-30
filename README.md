@@ -3,7 +3,7 @@ This repository will be used as a blog-article for Python Library with DSA and
 Advanced Competitive Programming based algorithm and code snippets.
 
 # Table of Contents
-- [HacktoberFest-202](#hacktoberfest-2023)
+- [HacktoberFest-2023](#hacktoberfest-2023)
 - [Table of Contents](#table-of-contents)
 - [Steps to Collaborate](#steps-to-collaborate)
   - [Fork this repository](#fork-this-repository)
